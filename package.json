@@ -1,34 +1,15 @@
-<<<<<<< HEAD
 {
-    "name": "foro-app",
-    "version": "1.0.0",
-    "description": "Foro simple con login",
-    "main": "app.js",
-    "scripts": {
-      "start": "node app.js"
-    },
-    "dependencies": {
-      "bcrypt": "^5.1.0",
-      "body-parser": "^1.20.2",
-      "express": "^4.18.2",
-      "express-session": "^1.17.3",
-      "sqlite3": "^5.1.6"
-    }
-=======
-{
-    "name": "foro-app",
-    "version": "1.0.0",
-    "description": "Foro simple con login",
-    "main": "app.js",
-    "scripts": {
-      "start": "node app.js"
-    },
-    "dependencies": {
-      "bcrypt": "^5.1.0",
-      "body-parser": "^1.20.2",
-      "express": "^4.18.2",
-      "express-session": "^1.17.3",
-      "sqlite3": "^5.1.6"
-    }
->>>>>>> 566a60a6cfcebb575671c7887fd70d847003a19b
+  "name": "foro",
+  "version": "1.0.0",
+  "description": "foro con express",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "body-parser": "^1.20.2",
+    "better-sqlite3": "^9.0.0"
   }
+}
