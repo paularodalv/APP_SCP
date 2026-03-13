@@ -1,37 +1,49 @@
 const express = require("express")
-const db = require("../database/db")
-const requireLogin = require("../middleware/authMiddleware")
-
 const router = express.Router()
+const db = require("../database/db")
 
-router.post("/create", requireLogin,(req,res)=>{
+// Listar posts
+router.get("/", (req, res) => {
+    db.all(
+        `SELECT posts.id, posts.content, posts.created_at, users.username
+         FROM posts
+         JOIN users ON posts.user_id = users.id
+         ORDER BY posts.created_at DESC`,
+        [],
+        (err, rows) => {
+            if (err) return res.send("Error al obtener posts")
 
-    const content = req.body.content
+            let html = "<h1>Posts</h1>"
+            html += `<p>Bienvenido, ${req.session.username}</p>`
+            html += `<a href="/logout">Cerrar sesión</a><br><br>`
+            html += `<form method="POST" action="/posts/new">
+                        <textarea name="content"></textarea>
+                        <button type="submit">Publicar</button>
+                     </form><hr>`
 
-    if(!content){
-        return res.send("Mensaje vacío")
-    }
+            rows.forEach(post => {
+                html += `<p><strong>${post.username}</strong>: ${post.content} <br>
+                         <small>${post.created_at}</small></p><hr>`
+            })
 
-    db.run(
-        "INSERT INTO posts(user_id,content) VALUES(?,?)",
-        [req.session.userId,content],
-        ()=>{
-            res.redirect("/wall.html")
+            res.send(html)
         }
     )
 })
 
-router.get("/all",(req,res)=>{
+// Crear post
+router.post("/new", (req, res) => {
+    const content = req.body.content
+    const userId = req.session.userId
 
-    db.all(`
-        SELECT posts.content, users.username, posts.created_at
-        FROM posts
-        JOIN users ON posts.user_id = users.id
-        ORDER BY posts.created_at DESC
-    `,(err,rows)=>{
-
-        res.json(rows)
-    })
+    db.run(
+        `INSERT INTO posts (user_id, content) VALUES (?, ?)`,
+        [userId, content],
+        function (err) {
+            if (err) return res.send("Error al crear post")
+            res.redirect("/posts")
+        }
+    )
 })
 
 module.exports = router
