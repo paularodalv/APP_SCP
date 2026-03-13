@@ -58,3 +58,5 @@ app.listen(3000,()=>{
     console.log("Servidor en http://localhost:3000")
 >>>>>>> 566a60a6cfcebb575671c7887fd70d847003a19b
 })
+
+app.use(express.static("public"));
